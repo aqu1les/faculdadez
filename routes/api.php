@@ -16,8 +16,6 @@ use Illuminate\Http\Request;
 Route::post("login", "AuthController@login");
 Route::post("register", "AuthController@register");
 
-Route::group(["middleware" => "auth:api", "prefix" => "users"], function() {
-    Route::get("/me", function() {
-        return "<h1>Dale</h1>";
-    });
+Route::group(["middleware" => "auth:api", "prefix" => "students"], function() {
+    Route::get("/me", "Student\MeController@me");
 });
