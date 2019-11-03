@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 class MeController extends ApiController
 {
     public function me() {
+
         return $this->success(Auth::user());
+
     }
 }

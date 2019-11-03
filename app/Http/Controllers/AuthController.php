@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Entities\Student;
+use App\Entities\Models\Student;
 use App\Traits\ApiResponse;
 use Validator;
 use Illuminate\Http\Request;
@@ -20,22 +20,29 @@ class AuthController extends Controller
             ]
         ]);
     }
+
     /**
      * Login API
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request) {
-        if(Auth::attempt(["cpf" => $request->cpf, "password" => $request->password])) {
+    public function login(Request $request)
+    {
+        if (Auth::attempt(["cpf" => $request->cpf, "password" => $request->password])) {
+
             $user = Auth::user();
             $token = $user->createToken("FaculdadeZ")->accessToken;
 
-
             return $this->success(["token" => $token]);
+
         } else {
-            return $this->unauthorized(["error" => "Unauthorized"]);
+
+            return $this->unauthorized(["error" => "Password or e-mail invalid"]);
+
         }
+
     }
+
     /**
      * Register api
      *
@@ -43,20 +50,26 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             "name" => "required",
             "cpf" => "required|unique:students",
             "password" => "required",
             "password_confirmation" => "required|same:password"
         ]);
+
         if ($validator->fails()) {
+
             return $this->unauthorized(["error"=>$validator->errors()]);
+
         }
+
         $input = $request->all();
         $input["password"] = bcrypt($input["password"]);
         $user = Student::create($input);
-        $success["token"] =  $user->createToken("FaculdadeZ")-> accessToken;
+        $success["token"] =  $user->createToken("FaculdadeZ")->accessToken;
         $success["name"] =  $user->name;
+
         return $this->success($success);
     }
 }

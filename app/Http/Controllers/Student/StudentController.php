@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers\Student;
 
-use App\Http\Controllers\Controller;
+use App\Entities\Models\Student;
+use App\Entities\Models\Teacher;
+use App\Http\Controllers\ApiController;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class StudentController extends Controller
+class StudentController extends ApiController
 {
-    public function index() {}
-    public function show() {}
-    public function store() {}
-    public function update() {}
-    public function delete() {}
+    /**
+     * StudentController constructor.
+     *
+     * Defines the model to the ApiController
+     */
+    public function __construct()
+    {
+        $this->model = Student::class;
+    }
 }
