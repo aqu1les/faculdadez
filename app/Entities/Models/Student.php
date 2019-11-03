@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Entities\Auth;
+namespace App\Entities\Models;
 
+use App\Entities\Models\Course;
+use App\Entities\Models\Discipline;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -36,4 +38,14 @@ class Student extends Authenticatable
     protected $casts = [
 
     ];
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
+    public function disciplines()
+    {
+        return $this->belongsToMany(Discipline::class, "students_disciplines")->withPivot("final_average", "status");
+    }
 }
