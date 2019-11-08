@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities\Models;
+namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,7 +8,7 @@ class Course extends Model
 {
     protected $fillable = ["name", "total_semesters"];
 
-    protected $appends = ["disciplines"];
+    protected $hidden = ["created_at", "updated_at"];
 
     public function disciplines()
     {

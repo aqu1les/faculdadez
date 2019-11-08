@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities\Models;
+namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,9 +8,13 @@ class Discipline extends Model
 {
     protected $fillable = ["name", "difficulty"];
 
-    public function teachers()
+	protected $hidden = ["created_at", "updated_at", "teacher_id"];
+
+	protected $appends = ["teacher"];
+
+    public function teacher()
     {
-        return $this->belongsToMany(Teacher::class, "teachers_disciplines");
+        return $this->belongsTo(Teacher::class);
     }
 
     public function courses()
@@ -22,4 +26,14 @@ class Discipline extends Model
     {
         return $this->belongsToMany(Student::class, "students_disciplines")->withPivot("final_average", "status");
     }
+
+    public function schedules()
+	{
+		return $this->hasMany(Schedule::class);
+	}
+
+	public function getTeacherAttribute()
+	{
+		return $this->teacher()->getResults();
+	}
 }

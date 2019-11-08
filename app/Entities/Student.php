@@ -1,9 +1,7 @@
 <?php
 
-namespace App\Entities\Models;
+namespace App\Entities;
 
-use App\Entities\Models\Course;
-use App\Entities\Models\Discipline;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -12,37 +10,12 @@ class Student extends Authenticatable
 {
     use Notifiable, HasApiTokens;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        "name", "cpf", "password", "current_semester", "course_id"
-    ];
+    protected $fillable = ["name", "cpf", "password", "current_semester", "course_id"];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        "password",
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-
-    ];
-
-    protected $appends = ["course"];
+    protected $hidden = ["password", "course_id", "created_at", "updated_at"];
 
     public function course()
-        {
+    {
         return $this->belongsTo(Course::class, "course_id", "id");
     }
 
@@ -51,9 +24,14 @@ class Student extends Authenticatable
         return $this->belongsToMany(Discipline::class, "students_disciplines")->withPivot("final_average", "status");
     }
 
-    public function getCourseAttribute()
+    public function getDisciplinesAttribute()
     {
-        return $this->course()->getResults();
+        return $this->disciplines()->getResults();
     }
+
+	public function getCourseAttribute()
+	{
+		return $this->course()->getResults();
+	}
 }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities\Models;
+namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,8 +8,10 @@ class Teacher extends Model
 {
     protected $fillable = ["name"];
 
-    public function disciplines()
+	protected $hidden = ["created_at", "updated_at"];
+
+    public function discipline()
     {
-        return $this->belongsToMany(Discipline::class, "teachers_disciplines");
+        return $this->hasOne(Discipline::class);
     }
 }
