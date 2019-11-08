@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Entities\Models\Student;
+use App\Entities\Student;
 use App\Traits\ApiResponse;
-use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Validator;
 
 class AuthController extends Controller
 {
