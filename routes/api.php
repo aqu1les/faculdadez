@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,20 +13,13 @@ use Illuminate\Http\Request;
 */
 
 Route::group(["prefix" => "auth"], function() {
-    Route::post("login", "AuthController@login");
-    Route::post("register", "AuthController@register");
+	Route::post("login", "AuthController@login");
+	Route::post("register", "AuthController@register");
 });
 
 Route::group(["middleware" => "auth:api"], function() {
-
-    Route::group(["prefix" => "students"], function () {
-        Route::get("", "Student\StudentController@index");
-        Route::get("/{id}", "Student\StudentController@show");
-    });
-
-    Route::group(["prefix" => "courses"], function () {
-        Route::get("", "Course\CourseController@index");
-        Route::post("", "Course\CourseController@store");
-        Route::get("/{id}", "Course\CourseController@show");
-    });
+	Route::group(["prefix" => "students"], function () {
+		Route::get("/me", "Student\MeController@me");
+		Route::get("/me/schoolRecord", "Student\MeController@schoolRecord");
+	});
 });
