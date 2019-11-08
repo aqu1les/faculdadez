@@ -17,6 +17,7 @@ class CreateStudentsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('cpf')->unique();
+            $table->string("registration")->unique();
             $table->integer('current_semester')->default('1');
             $table->bigInteger('course_id')->unsigned()->nullable();
             $table->string('password');

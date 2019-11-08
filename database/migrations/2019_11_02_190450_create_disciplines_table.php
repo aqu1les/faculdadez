@@ -13,10 +13,12 @@ class CreateDisciplinesTable extends Migration
      */
     public function up()
     {
-        Schema::create('disciplines', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('difficulty');
+        Schema::create("disciplines", function (Blueprint $table) {
+            $table->bigIncrements("id");
+            $table->string("name");
+            $table->string("difficulty");
+			$table->bigInteger("teacher_id")->unsigned();
+			$table->foreign("teacher_id")->references("id")->on("teachers");
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ class CreateDisciplinesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('disciplines');
+        Schema::dropIfExists("disciplines");
     }
 }
