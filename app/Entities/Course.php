@@ -8,6 +8,8 @@ class Course extends Model
 {
     protected $fillable = ["name", "total_semesters"];
 
+    protected $appends = ["disciplines"];
+
     public function disciplines()
     {
         return $this->belongsToMany(Discipline::class, "disciplines_courses")->withPivot("semester");
@@ -15,6 +17,11 @@ class Course extends Model
 
     public function student()
     {
-        return $this->hasOne(Student::class);
+        return $this->hasMany(Student::class);
+    }
+
+    public function getDisciplinesAttribute()
+    {
+        return $this->disciplines()->getResults();
     }
 }

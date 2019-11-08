@@ -27,7 +27,7 @@ class Student extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        "password"
+        "password",
     ];
 
     /**
@@ -39,13 +39,21 @@ class Student extends Authenticatable
 
     ];
 
+    protected $appends = ["course"];
+
     public function course()
-    {
-        return $this->belongsTo(Course::class);
+        {
+        return $this->belongsTo(Course::class, "course_id", "id");
     }
 
     public function disciplines()
     {
         return $this->belongsToMany(Discipline::class, "students_disciplines")->withPivot("final_average", "status");
     }
+
+    public function getCourseAttribute()
+    {
+        return $this->course()->getResults();
+    }
 }
+
