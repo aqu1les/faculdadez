@@ -37,7 +37,7 @@ class AuthController extends Controller
 
         } else {
 
-            return $this->unauthorized(["error" => "Password or e-mail invalid"]);
+            return $this->unauthorized(["error" => "Login/Senha inválido."]);
 
         }
 

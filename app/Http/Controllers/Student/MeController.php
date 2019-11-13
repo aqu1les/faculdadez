@@ -16,17 +16,20 @@ class MeController extends ApiController
 	 * Defines the model to the ApiController
 	 */
 
-	protected $user;
 	public function __construct()
 	{
 		$this->model = Student::class;
-		$this->user = Auth::user();
+	}
+
+	public function getUserCourse()
+	{
+		return Course::where("id", "=", Auth::user()["course_id"])->first();
 	}
 
     public function me()
     {
-    	$user = Auth::user();
-		$course = Course::where("id", "=", $user["course_id"])->first();
+    	$user =  Auth::user();
+		$course = $this->getUserCourse();
 		$course = [
 			"id" => $course["id"],
 			"name" => $course["name"],
@@ -46,6 +49,30 @@ class MeController extends ApiController
 
     public function schoolRecord()
 	{
-		return $this->success(Student::with("disciplines")->first());
+		$disciplinesWithGrades = Auth::user()->with("disciplines")->first()->disciplines;
+		$course = $this->getUserCourse();
+		$semesters = [];
+
+		// Creates the array of disciplines separating them by the semester
+		for($i = 0; $i < $course->total_semesters; $i++) {
+			$semesters[$i] = [];
+		}
+
+		foreach($disciplinesWithGrades as $discipline) {
+			$courseWithDiscipline = $course->disciplines()->wherePivot("discipline_id", "=", $discipline->id)->first();
+			$courseWithDiscipline["grade"] = $discipline->pivot;
+			$courseWithDiscipline["semester"] = $courseWithDiscipline->pivot->semester;
+			unset($courseWithDiscipline["pivot"]);
+			array_push($semesters[$courseWithDiscipline["semester"] - 1], $courseWithDiscipline);
+		}
+
+		$schoolRecord = [
+			"id" => $course->id,
+			"name" => $course->name,
+			"total_semesters" => $course->total_semesters,
+			"disciplines" => $semesters
+		];
+
+		return $this->success($schoolRecord);
 	}
 }
