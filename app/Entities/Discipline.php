@@ -10,7 +10,7 @@ class Discipline extends Model
 
 	protected $hidden = ["created_at", "updated_at", "teacher_id"];
 
-	protected $appends = ["teacher"];
+	protected $appends = ["teacher", "schedules"];
 
     public function teacher()
     {
@@ -35,5 +35,10 @@ class Discipline extends Model
 	public function getTeacherAttribute()
 	{
 		return $this->teacher()->getResults();
+	}
+
+	public function getSchedulesAttribute()
+	{
+		return $this->schedules()->getResults();
 	}
 }
