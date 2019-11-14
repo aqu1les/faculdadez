@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Student;
 
 use App\Entities\Course;
-use App\Entities\Discipline;
 use App\Entities\Student;
 use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\Auth;

@@ -21,5 +21,6 @@ Route::group(["middleware" => "auth:api"], function() {
 	Route::group(["prefix" => "students"], function () {
 		Route::get("/me", "Student\MeController@me");
 		Route::get("/me/schoolRecord", "Student\MeController@schoolRecord");
+		Route::post("/feedback", "Feedback\FeedbackController@store");
 	});
 });

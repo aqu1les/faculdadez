@@ -13,9 +13,9 @@ class StudentsTableSeeder extends Seeder
     {
         DB::table("students")->insert([
             "name" => "Felipe Barros",
-            "cpf" => "06537667186",
+            "cpf" => "12312312389",
             "registration" => "01224729",
-            "password" => \Illuminate\Support\Facades\Hash::make("Aquiles123"),
+            "password" => \Illuminate\Support\Facades\Hash::make("secret"),
             "current_semester" => "5",
             "course_id" => 1
         ]);
