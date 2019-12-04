@@ -47,12 +47,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+		return redirect('/');
+        //return parent::render($request, $exception);
     }
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         return response([
-            "error" => "Unauthenticated or token expired."
-        ],401);
+            'error' => 'Unauthenticated or token expired.'
+        ], 401);
     }
 }
