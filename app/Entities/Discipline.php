@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Discipline extends Model
 {
-    protected $fillable = ["name", "difficulty"];
+    protected $fillable = ['name', 'difficulty'];
 
-	protected $hidden = ["created_at", "updated_at", "teacher_id"];
+	protected $hidden = ['created_at', 'updated_at', 'teacher_id'];
 
-	protected $appends = ["teacher", "schedules"];
+	protected $appends = ['teacher', 'schedules'];
 
     public function teacher()
     {
@@ -19,17 +19,22 @@ class Discipline extends Model
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class, "disciplines_courses")->withPivot("semester");
+        return $this->belongsToMany(Course::class, 'disciplines_courses')->withPivot('semester');
     }
 
     public function students()
     {
-        return $this->belongsToMany(Student::class, "students_disciplines")->withPivot("final_average", "status");
+        return $this->belongsToMany(Student::class, 'students_disciplines')->withPivot('final_average', 'status');
     }
 
     public function schedules()
 	{
 		return $this->hasMany(Schedule::class);
+	}
+
+	public function getStudentsAttribute()
+	{
+		return $this->students()->getResults();
 	}
 
 	public function getTeacherAttribute()
@@ -40,5 +45,10 @@ class Discipline extends Model
 	public function getSchedulesAttribute()
 	{
 		return $this->schedules()->getResults();
+	}
+
+	public function getSemesterByCourse($course_id)
+	{
+		return $this->courses()->where('course_id', $course_id)->get(['semester'])->first();
 	}
 }

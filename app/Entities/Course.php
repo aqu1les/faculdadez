@@ -20,8 +20,8 @@ class Course extends Model
         return $this->hasMany(Student::class);
     }
 
-    public function getDisciplinesAttribute()
-    {
-        return $this->disciplines()->getResults();
-    }
+    public function getSemesterDisciplines($semester)
+	{
+		return $this->disciplines()->wherePivot('semester', $semester);
+	}
 }

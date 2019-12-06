@@ -4,25 +4,15 @@ namespace App\Http\Controllers\Feedback;
 
 use App\Entities\Feedback;
 use App\Http\Controllers\ApiController;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreFeedback;
 use Illuminate\Support\Facades\Validator;
 
 class FeedbackController extends ApiController
 {
-	public function store(Request $request)
+	public function store(StoreFeedback $request)
 	{
-		$validator = Validator::make($request->all(), [
-			"name" => "required",
-			"email" => "email",
-			"message" => "required"
-		]);
-
-		if ($validator->fails()) {
-			return $this->unprocessable(["error"=>$validator->errors()]);
-		}
-
-		Feedback::create($request->all());
-
+		$validated = $request->validated();
+		Feedback::create($validated);
 		return $this->success(["msg" => "Feedback successfully stored"]);
 	}
 }
